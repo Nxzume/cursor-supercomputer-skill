@@ -37,6 +37,17 @@ inject noise into unrelated tasks.
   after non-trivial work, pull MCP context instead of guessing.
 - **Brute-force solver loop** — hypothesize → try → verify → revise → iterate,
   instead of stopping at the first failure.
+- **Path boundaries (scope ledgers)** — Operating Principle #6. Before spawning
+  sub-agents, each worker is assigned explicit directory/file boundaries (e.g.
+  `Worker A: src/components/**`, `Worker B: src/api/**`); workers are forbidden
+  from modifying files outside their assigned scope without Orchestrator
+  permission. Prevents parallel workers from colliding or clobbering unrelated
+  files (auth helpers, config) while building elsewhere.
+- **Proof Requirement** — under Phase 4 — Verify. A phase cannot be marked
+  "Done" via status update alone. The agent must execute and log a concrete
+  terminal proof command (`npm run test`, `pnpm build`, `tsc --noEmit`, or a
+  lint check) and inspect the zero-exit-code output. Non-zero or un-runnable
+  proof means the phase is not done.
 
 ## Loop safety (termination guards)
 
